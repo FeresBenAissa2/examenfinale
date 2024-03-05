@@ -1,23 +1,42 @@
 package com.esprit.examen.scheduler;
 
 
+import com.esprit.examen.dao.entites.Equipe;
+import com.esprit.examen.dao.entites.Rencontre;
+import com.esprit.examen.services.rencontre.IRencontreService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Component
 @AllArgsConstructor
 @Slf4j
 public class Scheduler {
 
-    //
-//    IChambreService iChambreService;
-//    IReservationService iReservationService;
-//
-//    @Scheduled(cron = "0 * * * * *")
-//    void service1() {
-//        iChambreService.listeChambresParBloc();
-//    }
+    IRencontreService iRencontreService;
+    @Scheduled(cron = "0 0 8 * * *")
+//    @Scheduled(cron = "*/5 * * * * *")
+
+    void rencontreDeDateSys() {
+        List<Rencontre> rencontres = iRencontreService.getAllRencontresByDate(LocalDate.now());
+        log.info(String.valueOf(LocalDate.now()));
+        log.info("*** Les rencontres d'aujourd'hui ****");
+        StringBuilder rec = new StringBuilder();
+        log.info(String.valueOf(rencontres.size()));
+        if(!rencontres.isEmpty()){
+            for(Rencontre rencontre : rencontres){
+                Equipe equipe1 = rencontre.getEquipeDomicile();
+                Equipe equipe2 = rencontre.getEquipeExterieur();
+//                append(equipe1.getId()).append("vs").append(equipe2.getId())
+                rec.append(rencontre.getNomStade());
+            }
+        }
+        log.info(rec.toString());
+    }
 //
 //    @Scheduled(fixedRate = 30000)
 //// 5 minutes = 300 secondes = 300000 millisecondes

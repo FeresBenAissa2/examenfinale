@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class Aspect {
 
-
+    @AfterThrowing("execution(* com.esprit.examen.services..*.affecterArbitreARencontre(..))")
+    public void method(JoinPoint jp){
+        log.info("Il faut affecter un arbitre de meme niveau que la rencontre");
+    }
 
 //    //Méthode: Advice
 //    @Before("execution(* tn.esprit.spring.Services..*.*(..))")
